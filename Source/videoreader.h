@@ -22,12 +22,16 @@ public:
     pthread_t videoThread;
 
     void setViewer(VideoViewer* viewer);
+    static void* run(void* args);
 
+    std::string videoSrc;
+    std::string window_name;
 signals:
     void finishDraw(QImage img);
 public slots:
 
 private:
+
     void start();
     void join();
 };

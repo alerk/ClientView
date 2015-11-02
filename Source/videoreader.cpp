@@ -12,8 +12,6 @@ using namespace cv;
 
 #define FPS 30
 
-
-static void* run(void* args);
 static int delay_uSecond;
 void Mat2QImage(cv::Mat const& src, QImage& dest);
 QImage* Mat2QImage(cv::Mat const& src);
@@ -29,8 +27,12 @@ VideoReader::VideoReader()
 
 VideoReader::VideoReader(std::string src)
 {
+    videoSrc = src;
     capture = VideoCapture(src);
+    std::cout << "Open: " << src << std::endl;
     delay_uSecond = 1000000/FPS;
+    window_name = "Window ";window_name.append(src);
+    cv::namedWindow(window_name);
     start();
 }
 
@@ -46,12 +48,13 @@ void VideoReader::setViewer(VideoViewer *viewer)
 
 void VideoReader::start()
 {
-    pthread_create(&videoThread,NULL,run,this);
+    pthread_create(&videoThread,NULL,VideoReader::run,this);
 }
 
-void* run(void *args)
+void* VideoReader::run(void *args)
 {
     Mat img;
+
     VideoReader* reader = (VideoReader*)args;
     while(true)
     {
@@ -66,6 +69,8 @@ void* run(void *args)
         else
         {
             //cv::resize(img, img, cv::Size(320,240));
+            //std::cout << "Read frame from " << reader->videoSrc << std::endl;
+            cv::imshow(reader->window_name, img);
             QImage temp;
             Mat2QImage(img, temp);
 //            if(send.width()!=temp.width() || send.height()!= temp.height());
