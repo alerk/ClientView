@@ -13,7 +13,7 @@ VideoWidget::VideoWidget(QWidget *parent) :
     setStyleSheet("background:transparent");
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint);
-    mImage = QImage(320,240,QImage::Format_RGBA8888);
+    mImage = QImage(320,240,QImage::Format_RGB888);
     mImage.fill(Qt::black);
 }
 
@@ -35,12 +35,12 @@ void VideoWidget::setImage(QImage img)
         painter.drawImage(0,0,(img.scaled(mImage.width(), mImage.height())));
         painter.end();
     }
-//    else
-//    {
-//        QPainter painter(mImage);
-//        painter.drawImage(0,0,*img);
-//        painter.end();
-//    }
+    else
+    {
+        QPainter painter(&mImage);
+        painter.drawImage(0,0,img);
+        painter.end();
+    }
     this->update();
 }
 
