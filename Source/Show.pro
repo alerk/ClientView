@@ -6,7 +6,12 @@ SOURCES += main.cpp \
     videoviewer.cpp \
     videowidget.cpp \
     videoreader.cpp \
-    show.cpp
+    show.cpp \
+    Socket/ClientSocket.cpp \
+    Socket/ServerSocket.cpp \
+    Socket/Socket.cpp \
+    videoreceiver.cpp \
+    messageparser.cpp
 
 RESOURCES += qml.qrc
 
@@ -23,6 +28,13 @@ HEADERS += \
     videoviewer.h \
     videowidget.h \
     videoreader.h \
-    show.h
+    show.h \
+    Socket/ClientSocket.h \
+    Socket/ServerSocket.h \
+    Socket/Socket.h \
+    Socket/SocketException.h \
+    videoreceiver.h \
+    common.h \
+    messageparser.h
 
 unix:!macx: LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui

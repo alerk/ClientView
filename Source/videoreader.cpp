@@ -32,7 +32,7 @@ VideoReader::VideoReader(std::string src)
     std::cout << "Open: " << src << std::endl;
     delay_uSecond = 1000000/FPS;
     window_name = "Window ";window_name.append(src);
-    cv::namedWindow(window_name);
+//    cv::namedWindow(window_name);
     start();
 }
 
@@ -70,7 +70,7 @@ void* VideoReader::run(void *args)
         {
             //cv::resize(img, img, cv::Size(320,240));
             //std::cout << "Read frame from " << reader->videoSrc << std::endl;
-            cv::imshow(reader->window_name, img);
+//            cv::imshow(reader->window_name, img);
             QImage temp;
             Mat2QImage(img, temp);
 //            if(send.width()!=temp.width() || send.height()!= temp.height());

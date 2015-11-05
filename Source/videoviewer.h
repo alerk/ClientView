@@ -13,6 +13,8 @@ public:
     void setSize(int w, int h);
     ~VideoViewer();
 
+    int index;
+
 signals:
 
 public slots:
