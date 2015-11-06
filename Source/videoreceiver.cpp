@@ -2,6 +2,7 @@
 
 #include "videoreceiver.h"
 #include "common.h"
+#include "messageparser.h"
 
 
 VideoReceiver::VideoReceiver(QObject *parent) : QObject(parent)
@@ -57,8 +58,10 @@ void* VideoReceiver::run(void *arg)
                     throw SocketException ( "Could not read from socket." );
                 }
                 //decode recv_buf
-
-
+                unsigned char output_type, output_value;
+                QImage send;
+                MessageParser.parseMessage(recv_size, recv_buff, output_type, output_value, send);
+                obj->getVideoViewer(output_value).onFinsihedDraw(send);
             }
         }
         catch(SocketException &e)
