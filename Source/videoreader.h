@@ -1,4 +1,4 @@
-f#ifndef VIDEOREADER_H
+#ifndef VIDEOREADER_H
 #define VIDEOREADER_H
 
 #include <pthread.h>

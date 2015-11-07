@@ -51,7 +51,8 @@ void MessageParser::parseMessage(unsigned int size, unsigned char *buffer, unsig
     for (i=0;i<size;i++)
     {
         data = buffer[i];
-        switch (current_state) {
+        switch (current_state)
+        {
         case IDLE:
             if(data==0xFF)
             {
@@ -78,8 +79,10 @@ void MessageParser::parseMessage(unsigned int size, unsigned char *buffer, unsig
             }
             break;
         case FLAG_55:
+        {
             current_state = MSG_TYPE;
             output_type = data;
+        }
             break;
         case MSG_TYPE:
             if(output_type!=0x02)
@@ -96,42 +99,58 @@ void MessageParser::parseMessage(unsigned int size, unsigned char *buffer, unsig
             }
             break;
         case SOURCE_ID:
+        {
             cols = data;
             current_state = COLS;
+        }
             break;
         case COLS:
+        {
             rows = data;
             current_state = ROWS;
+        }
             break;
         case ROWS:
+        {
             depth = data;
             current_state = DEPTH;
+        }
             break;
         case DEPTH:
+        {
             idx = data;
             current_state = IDX;
+        }
             break;
         case IDX:
+        {
             total = data;
             current_state = TOTAL;
+        }
             break;
         case TOTAL:
+        {
             img_size = (unsigned int)(*(buffer+i));
             i+=3;
             current_state = SIZE;
+        }
             break;
         case SIZE:
+        {
             img_buffer = (buffer+i);
             current_state = DATA;
+        }
             break;
         case DATA:
+        {
             cv::Mat opencv_img(rows,cols,CV_8UC3,img_buffer);
-//            cv::Mat opencv_img(rows,cols,CV_8UC3);
-//            memcpy(opencv_img.data(), img_buffer, rows*cols*depth);
+            //            cv::Mat opencv_img(rows,cols,CV_8UC3);
+            //            memcpy(opencv_img.data(), img_buffer, rows*cols*depth);
             cv::Mat temp; // make the same cv::Mat
             cv::cvtColor(opencv_img, temp,CV_BGR2RGB); // cvtColor Makes a copt, that what i need
             output = QImage((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
             output.bits();
+        }
             break;
         default:
             break;

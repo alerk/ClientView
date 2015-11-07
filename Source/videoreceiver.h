@@ -21,7 +21,7 @@ class VideoReceiver : public QObject
 {
     Q_OBJECT
 
-    std::vector<VideoViewer> videoViewerTrunk;
+    std::vector<VideoViewer*> videoViewerTrunk;
     pthread_t receiverThread;
 
 public:
@@ -29,15 +29,19 @@ public:
     ~VideoReceiver();
 
     void start();
-    void addVideoViewer(VideoViewer &obj);
-    VideoViewer& getVideoViewer(int index);
+    void join();
+    void addVideoViewer(VideoViewer* obj);
+    VideoViewer* getVideoViewer(int index);
 
 
     static void* run(void* arg);
 
 
 signals:
-
+    void finishedDraw_0(QImage img);
+    void finishedDraw_1(QImage img);
+    void finishedDraw_2(QImage img);
+    void finishedDraw_3(QImage img);
 
 
 public slots:

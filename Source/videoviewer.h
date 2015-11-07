@@ -15,6 +15,8 @@ public:
 
     int index;
 
+
+
 signals:
 
 public slots:
@@ -24,6 +26,7 @@ private:
     QGraphicsProxyWidget* mProxyWidget;
     QImage mImage;
     VideoWidget* mWidget;
+
 };
 
 #endif // VIDEOVIEWER_H

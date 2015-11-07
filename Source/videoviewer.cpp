@@ -34,6 +34,7 @@ void VideoViewer::setSize(int w, int h)
 
 void VideoViewer::onFinsihedDraw(QImage img)
 {
+//    doFinishedDraw(img);
     //mImage = img;
     mWidget->setImage(img);
 }
