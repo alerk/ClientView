@@ -38,6 +38,7 @@ public:
 
 
 signals:
+    void finishedDraw(QImage img);
     void finishedDraw_0(QImage img);
     void finishedDraw_1(QImage img);
     void finishedDraw_2(QImage img);

@@ -1,6 +1,9 @@
 #include "messageparser.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#define IMG_BUFFER_SIZE 928332
 
 typedef enum parsing_state_t
 {
@@ -21,7 +24,9 @@ typedef enum parsing_state_t
     DATA
 }parsing_state;
 
-static parsing_state current_state = IDLE;
+static parsing_state next_state = IDLE;
+static unsigned char img_buffer[IMG_BUFFER_SIZE];
+static unsigned long img_idx=0;
 
 MessageParser::MessageParser()
 {
@@ -44,56 +49,54 @@ void MessageParser::parseMessage(unsigned int size, unsigned char *buffer, unsig
     unsigned char total;
     unsigned int img_size;
 
-    unsigned char* img_buffer;
-
     unsigned char data;
 
     for (i=0;i<size;i++)
     {
         data = buffer[i];
-        switch (current_state)
+        switch (next_state)
         {
         case IDLE:
             if(data==0xFF)
             {
-                current_state = FLAG_F1;
+                next_state = FLAG_F1;
             }
 
             break;
         case FLAG_F1:
             if(data==0xFF)
             {
-                current_state = FLAG_F2;
+                next_state = FLAG_F2;
             }
             break;
         case FLAG_F2:
             if(data==0xAA)
             {
-                current_state = FLAG_AA;
+                next_state = FLAG_AA;
             }
             break;
         case FLAG_AA:
             if(data==0x55)
             {
-                current_state = FLAG_55;
+                next_state = FLAG_55;
             }
             break;
         case FLAG_55:
         {
-            current_state = MSG_TYPE;
+            next_state = MSG_TYPE;
             output_type = data;
         }
             break;
         case MSG_TYPE:
             if(output_type!=0x02)
             {
-                current_state = IDLE;
+                next_state = IDLE;
                 output_value = data;
                 //emit something here
             }
             else
             {
-                current_state = SOURCE_ID;
+                next_state = SOURCE_ID;
                 src_id = data;
                 output_value = data;
             }
@@ -101,55 +104,65 @@ void MessageParser::parseMessage(unsigned int size, unsigned char *buffer, unsig
         case SOURCE_ID:
         {
             cols = data;
-            current_state = COLS;
+            next_state = COLS;
         }
             break;
         case COLS:
         {
             rows = data;
-            current_state = ROWS;
+            next_state = ROWS;
         }
             break;
         case ROWS:
         {
             depth = data;
-            current_state = DEPTH;
+            next_state = DEPTH;
         }
             break;
         case DEPTH:
         {
             idx = data;
-            current_state = IDX;
+            next_state = IDX;
         }
             break;
         case IDX:
         {
             total = data;
-            current_state = TOTAL;
+            next_state = SIZE;
         }
             break;
-        case TOTAL:
-        {
-            img_size = (unsigned int)(*(buffer+i));
-            i+=3;
-            current_state = SIZE;
-        }
-            break;
+//        case TOTAL:
+//        {
+//            img_size = (unsigned int)(*(buffer+i));
+//            i+=3;
+//            next_state = SIZE;
+//        }
+//            break;
         case SIZE:
         {
-            img_buffer = (buffer+i);
-            current_state = DATA;
+            img_buffer[img_idx++] = data;
+            //memcpy(img_buffer,(buffer+i),IMG_BUFFER_SIZE);
+            next_state = DATA;
         }
             break;
         case DATA:
         {
-            cv::Mat opencv_img(rows,cols,CV_8UC3,img_buffer);
-            //            cv::Mat opencv_img(rows,cols,CV_8UC3);
-            //            memcpy(opencv_img.data(), img_buffer, rows*cols*depth);
-            cv::Mat temp; // make the same cv::Mat
-            cv::cvtColor(opencv_img, temp,CV_BGR2RGB); // cvtColor Makes a copt, that what i need
-            output = QImage((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
-            output.bits();
+            img_buffer[img_idx++] = data;
+            if(img_idx == IMG_BUFFER_SIZE)
+            {
+                cv::Mat opencv_img(cv::Size(24*20+2,32*20+2),CV_8UC3,img_buffer);
+                //            cv::Mat opencv_img(rows,cols,CV_8UC3);
+                //            memcpy(opencv_img.data(), img_buffer, rows*cols*depth);
+                //cv::imshow("Recv img", opencv_img);
+                cv::Mat temp; // make the same cv::Mat
+                cv::cvtColor(opencv_img, temp,CV_BGR2RGB); // cvtColor Makes a copt, that what i need
+                output = QImage((const uchar *) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888);
+                output.bits();
+                output_type = 2;
+                output_value = 6;
+                next_state = IDLE;
+                img_idx = 0;
+            }
         }
             break;
         default:

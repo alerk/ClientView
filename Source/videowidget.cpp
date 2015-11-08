@@ -2,6 +2,8 @@
 #include <QTimer>
 #include <QPainter>
 
+#define IMG_WIDTH   320
+#define IMG_HEIGHT  240
 
 
 VideoWidget::VideoWidget(QWidget *parent) :
@@ -13,7 +15,7 @@ VideoWidget::VideoWidget(QWidget *parent) :
     setStyleSheet("background:transparent");
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint);
-    mImage = QImage(320,240,QImage::Format_RGB888);
+    mImage = QImage(IMG_WIDTH,IMG_HEIGHT,QImage::Format_RGB888);
     mImage.fill(Qt::black);
 }
 

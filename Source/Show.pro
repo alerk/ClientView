@@ -37,4 +37,9 @@ HEADERS += \
     common.h \
     messageparser.h
 
-unix:!macx: LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+#unix:!macx: LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+
+unix:!macx: LIBS += -L/usr/local/lib/ -lopencv_core -lopencv_imgproc -lopencv_highgui
+
+INCLUDEPATH += /usr/local/include
+DEPENDPATH += /usr/local/include

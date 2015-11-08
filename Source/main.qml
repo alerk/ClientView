@@ -102,6 +102,14 @@ Rectangle {
                 anchors.fill: parent;
                 columns: 2;
                 spacing: 2;
+//                Rectangle{
+//                    id: mainView_Rect
+//                    color: "#80F00000"
+//                    width: 644; height: 484;
+//                    VideoViewer{ objectName: "mainView";}
+//                    border.width: 1
+//                    border.color: "blue"
+//                }
 
                 Rectangle{
                     id: mainView_Rect

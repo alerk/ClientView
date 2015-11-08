@@ -54,7 +54,7 @@ void* VideoReceiver::run(void *arg)
             std::cout << "\r" << std::flush;
             std::cout << "Trying to connect " << counter++ << std::endl;
             counter %= 10;
-            ClientSocket clientSock("192.168.50.101",13579);
+            ClientSocket clientSock("localhost",13579);
             std::cout << "Open connection" << std::endl;
             while(true)
             {
@@ -68,27 +68,40 @@ void* VideoReceiver::run(void *arg)
                 QImage send;
 
                 MessageParser::parseMessage(recv_size, recv_buf, output_type, output_value, send);
-                if(output_type == 0x02)
+                if(output_type == 2 && output_value == 6)
                 {
-                    switch(output_value)
-                    {
-                        case 0:
-                            emit obj->finishedDraw_0(send);
-                            break;
-                        case 1:
-                            emit obj->finishedDraw_1(send);
-                            break;
-                        case 2:
-                            emit obj->finishedDraw_2(send);
-                            break;
-                        case 3:
-                            emit obj->finishedDraw_3(send);
-                            break;
-                        default:
-                            std::cout << "Error while receiving src_id" << std::endl;
-                            break;
-                    }
+                    emit obj->finishedDraw(send);
+                    std::cout << "Send image" << std::endl;
                 }
+//                if(output_type == 0x02)
+//                {
+//                    if(output_value==5)
+//                    {
+//                        //emit obj->finishedDraw_0(send);
+//                    }
+//                    else
+//                    {
+//                        std::cout << "Error while receiving src_id" << std::endl;
+//                    }
+//                    switch(output_value)
+//                    {
+//                        case 0:
+//                            emit obj->finishedDraw_0(send);
+//                            break;
+//                        case 1:
+//                            emit obj->finishedDraw_1(send);
+//                            break;
+//                        case 2:
+//                            emit obj->finishedDraw_2(send);
+//                            break;
+//                        case 3:
+//                            emit obj->finishedDraw_3(send);
+//                            break;
+//                        default:
+//                            std::cout << "Error while receiving src_id" << std::endl;
+//                            break;
+//                    }
+//                }
 
                 //obj->getVideoViewer(output_value).doFinishedDraw(send);
             }
