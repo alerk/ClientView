@@ -2,8 +2,8 @@
 #include <QTimer>
 #include <QPainter>
 
-#define IMG_WIDTH   320
-#define IMG_HEIGHT  240
+#define IMG_WIDTH   640
+#define IMG_HEIGHT  480
 
 
 VideoWidget::VideoWidget(QWidget *parent) :

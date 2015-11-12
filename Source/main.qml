@@ -97,53 +97,57 @@ Rectangle {
             y: parent.height/3;
             width: parent.width;
             height: 2*parent.height/3;
-            Grid {
-                id: grid2;
-                anchors.fill: parent;
-                columns: 2;
-                spacing: 2;
+
+            Rectangle{
+                id: mainView_Rect
+                  anchors.fill: parent;
+                color: "#80F00000"
+                width: 644; height: 484;
+                VideoViewer{ objectName: "mainView";}
+                border.width: 1
+                border.color: "blue"
+            }
+
+//            Grid {
+//                id: grid2;
+//                anchors.fill: parent;
+//                columns: 2;
+//                spacing: 2;
+
+
 //                Rectangle{
 //                    id: mainView_Rect
 //                    color: "#80F00000"
-//                    width: 644; height: 484;
+//                    width: 320; height: 240;
 //                    VideoViewer{ objectName: "mainView";}
 //                    border.width: 1
 //                    border.color: "blue"
 //                }
-
-                Rectangle{
-                    id: mainView_Rect
-                    color: "#80F00000"
-                    width: 320; height: 240;
-                    VideoViewer{ objectName: "mainView";}
-                    border.width: 1
-                    border.color: "blue"
-                }
-                Rectangle{
-                    id: mainView1_Rect
-                    color: "#800F0000"
-                    width: 320; height: 240;
-                    VideoViewer{objectName: "mainView1";}
-                    border.width: 1
-                    border.color: "red"
-                }
-                Rectangle{
-                    id: mainView2_Rect
-                    color: "#8000F000"
-                    width: 320; height: 240;
-                    VideoViewer{objectName: "mainView2";}
-                    border.width: 1
-                    border.color: "green"
-                }
-                Rectangle{
-                    id: mainView3_Rect
-                    color: "#80000F00"
-                    width: 320; height: 240;
-                    VideoViewer{objectName: "mainView3";}
-                    border.width: 1;
-                    border.color: "yellow";
-                }
-            }
+//                Rectangle{
+//                    id: mainView1_Rect
+//                    color: "#800F0000"
+//                    width: 320; height: 240;
+//                    VideoViewer{objectName: "mainView1";}
+//                    border.width: 1
+//                    border.color: "red"
+//                }
+//                Rectangle{
+//                    id: mainView2_Rect
+//                    color: "#8000F000"
+//                    width: 320; height: 240;
+//                    VideoViewer{objectName: "mainView2";}
+//                    border.width: 1
+//                    border.color: "green"
+//                }
+//                Rectangle{
+//                    id: mainView3_Rect
+//                    color: "#80000F00"
+//                    width: 320; height: 240;
+//                    VideoViewer{objectName: "mainView3";}
+//                    border.width: 1;
+//                    border.color: "yellow";
+//                }
+//            }
 
         }
     }

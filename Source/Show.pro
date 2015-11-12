@@ -10,8 +10,7 @@ SOURCES += main.cpp \
     Socket/ClientSocket.cpp \
     Socket/ServerSocket.cpp \
     Socket/Socket.cpp \
-    videoreceiver.cpp \
-    messageparser.cpp
+    videoreceiver.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,8 +33,7 @@ HEADERS += \
     Socket/Socket.h \
     Socket/SocketException.h \
     videoreceiver.h \
-    common.h \
-    messageparser.h
+    common.h
 
 #unix:!macx: LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 

@@ -14,13 +14,14 @@ public:
     ~VideoViewer();
 
     int index;
+    QImage l_img;
 
 
 
 signals:
 
 public slots:
-    void onFinsihedDraw(QImage img);
+    void onFinishedDraw(QImage img);
 
 private:
     QGraphicsProxyWidget* mProxyWidget;
